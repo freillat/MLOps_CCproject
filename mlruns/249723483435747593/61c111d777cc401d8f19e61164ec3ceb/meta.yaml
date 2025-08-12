@@ -1,0 +1,14 @@
+artifact_uri: file:///app/mlruns/249723483435747593/61c111d777cc401d8f19e61164ec3ceb/artifacts
+end_time: 1755024190496
+entry_point_name: ''
+experiment_id: '249723483435747593'
+lifecycle_stage: active
+run_id: 61c111d777cc401d8f19e61164ec3ceb
+run_name: learned-pug-42
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1755024186577
+status: 3
+tags: []
+user_id: root

@@ -1,0 +1,6 @@
+artifact_location: file:///app/mlruns/249723483435747593
+creation_time: 1755022589172
+experiment_id: '249723483435747593'
+last_update_time: 1755022589172
+lifecycle_stage: active
+name: Credit Card Default Prediction

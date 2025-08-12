@@ -1,0 +1,38 @@
+artifact_path: file:///app/mlruns/249723483435747593/models/m-dd27d75ecd8f434cb55ad28564a1366e/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.9.23
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.6.1
+is_signature_from_type_hint: false
+mlflow_version: 3.1.4
+model_id: m-dd27d75ecd8f434cb55ad28564a1366e
+model_size_bytes: 6366407
+model_uuid: m-dd27d75ecd8f434cb55ad28564a1366e
+prompts: null
+run_id: 61c111d777cc401d8f19e61164ec3ceb
+saved_input_example_info:
+  artifact_path: input_example.json
+  pandas_orient: split
+  serving_input_path: serving_input_example.json
+  type: dataframe
+signature:
+  inputs: '[{"type": "long", "name": "LIMIT_BAL", "required": true}, {"type": "long",
+    "name": "SEX", "required": true}, {"type": "long", "name": "EDUCATION", "required":
+    true}, {"type": "long", "name": "MARRIAGE", "required": true}, {"type": "long",
+    "name": "AGE", "required": true}, {"type": "double", "name": "PAY_0", "required":
+    false}, {"type": "long", "name": "BILL_AMT1", "required": true}, {"type": "long",
+    "name": "PAY_AMT1", "required": true}]'
+  outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "int64", "shape": [-1]}}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2025-08-12 18:43:08.074041'

@@ -1,0 +1,14 @@
+artifact_uri: file:///app/mlruns/249723483435747593/d1010dff4454453cb3220ad4660870c4/artifacts
+end_time: 1755024503199
+entry_point_name: ''
+experiment_id: '249723483435747593'
+lifecycle_stage: active
+run_id: d1010dff4454453cb3220ad4660870c4
+run_name: funny-finch-112
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1755024499401
+status: 3
+tags: []
+user_id: root

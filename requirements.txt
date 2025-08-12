@@ -6,3 +6,4 @@ prefect==2.16.1
 prefect-aws
 evidently
 boto3
+griffe<1.0.0

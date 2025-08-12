@@ -4,6 +4,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 import mlflow
+from mlflow.models import infer_signature
 import os
 
 def load_data(file_path):
@@ -15,20 +16,30 @@ def load_data(file_path):
 
 def preprocess_data(df):
     """Preprocesses the data by handling categorical features."""
-    # The dataset has many features, we'll select a few for a simple model.
-    # The 'default.payment.next.month' column is our target variable.
-    df.columns = df.columns.str.replace('.', '_')
-    df.rename(columns={'default_payment_next_month': 'target'}, inplace=True)
     
-    # We will use simple feature selection for this example
+    # 1. Normalize column names
+    df.columns = df.columns.str.replace('.', '_', regex=False)
+    df.columns = df.columns.str.replace(' ', '_', regex=False)
+    
+    # 2. Check for and rename the target column
+    original_target_col = 'default_payment_next_month'
+    if original_target_col not in df.columns:
+        raise KeyError(f"Column '{original_target_col}' not found.")
+    df.rename(columns={original_target_col: 'target'}, inplace=True)
+    
+    # 3. Handle missing values
+    # Drop rows where the target variable 'target' is missing
+    df.dropna(subset=['target'], inplace=True)
+    
     features = ['LIMIT_BAL', 'SEX', 'EDUCATION', 'MARRIAGE', 'AGE', 
                 'PAY_0', 'BILL_AMT1', 'PAY_AMT1']
     
     X = df[features]
     y = df['target']
     
-    # For simplicity, we won't do complex scaling or one-hot encoding here,
-    # but a real-world model would require it.
+    # Optional: You might also want to handle missing values in the features (X)
+    # For this simple model, you could drop rows with any missing feature values
+    # df.dropna(subset=features, inplace=True)
     
     return X, y
 
@@ -54,8 +65,32 @@ def train_model(X_train, y_train, n_estimators=100, max_depth=10):
         mlflow.log_metric("precision", precision)
         mlflow.log_metric("recall", recall)
         
+        # Get a sample of the training data
+        sample_input = X_train.sample(n=5, random_state=42)
+                
+        integer_cols = sample_input.select_dtypes(include=['int64']).columns.tolist()
+        
+        if integer_cols:
+            sample_with_nan = sample_input.copy()
+            # Add a NaN to the first integer column
+            sample_with_nan.loc[sample_with_nan.index[0], integer_cols[0]] = pd.NA
+        else:
+            # If no integer columns are found, use the original sample
+            sample_with_nan = sample_input
+
+        # Infer the model signature using the sample with a NaN
+        signature = infer_signature(
+            model_input=sample_with_nan, 
+            model_output=model.predict(sample_input)
+        )
+        
         # Log the model
-        mlflow.sklearn.log_model(model, "random-forest-model")
+        mlflow.sklearn.log_model(
+            sk_model=model,
+            name="random-forest-model-artifact",
+            signature=signature,
+            input_example=sample_with_nan
+        )
         
         run_id = mlflow.active_run().info.run_id
         print(f"MLflow Run ID: {run_id}")

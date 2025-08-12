@@ -1,0 +1,14 @@
+artifact_uri: file:///app/mlruns/249723483435747593/e7224bd3835742829af0bff3125bb7a1/artifacts
+end_time: 1755022593253
+entry_point_name: ''
+experiment_id: '249723483435747593'
+lifecycle_stage: active
+run_id: e7224bd3835742829af0bff3125bb7a1
+run_name: melodic-goat-347
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1755022589226
+status: 3
+tags: []
+user_id: root

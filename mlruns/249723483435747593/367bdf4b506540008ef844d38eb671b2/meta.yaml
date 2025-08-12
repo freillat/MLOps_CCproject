@@ -1,0 +1,14 @@
+artifact_uri: file:///app/mlruns/249723483435747593/367bdf4b506540008ef844d38eb671b2/artifacts
+end_time: 1755023538493
+entry_point_name: ''
+experiment_id: '249723483435747593'
+lifecycle_stage: active
+run_id: 367bdf4b506540008ef844d38eb671b2
+run_name: clean-pig-704
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1755023536939
+status: 4
+tags: []
+user_id: root

@@ -1,0 +1,14 @@
+artifact_uri: file:///app/mlruns/249723483435747593/2e7ee6f12cc74d578bd0638122f1b4f6/artifacts
+end_time: 1755023735596
+entry_point_name: ''
+experiment_id: '249723483435747593'
+lifecycle_stage: active
+run_id: 2e7ee6f12cc74d578bd0638122f1b4f6
+run_name: judicious-mule-291
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1755023731672
+status: 3
+tags: []
+user_id: root
