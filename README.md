@@ -43,3 +43,112 @@ CI/CD: A GitHub Actions workflow runs pytest every time code is pushed to the ma
 Infrastructure: All cloud resources, such as the S3 bucket for data storage, are defined using Terraform. This allows for the entire infrastructure to be provisioned and updated in a reproducible way.
 
 This architecture creates a reliable and automated system for building and maintaining a production-ready machine learning model.
+
+
+
+
+# How to guide
+
+This document provides a step-by-step guide to setting up and running the end-to-end MLOps project from scratch. It assumes you have access to the codebase and a configured AWS account.
+
+-----
+
+## 1\. Prerequisites 📋
+
+Before you begin, ensure your local environment has the following:
+
+  * **Python:** The project requires Python 3.8 or higher.
+
+  * **Dependencies:** All necessary Python libraries can be installed with the provided `requirements.txt` file.
+
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+  * **AWS CLI:** Configure your local machine with access to your AWS account.
+
+    ```bash
+    aws configure
+    ```
+
+  * **Terraform:** This project uses Terraform for Infrastructure as Code (IaC). Ensure it is installed on your system.
+
+-----
+
+## 2\. Project Setup 🚀
+
+The first step is to provision the necessary cloud infrastructure and configure your environment.
+
+1.  **Provision AWS Resources with Terraform:**
+
+      * Navigate to the directory containing the `main.tf` file.
+      * Initialize Terraform and apply the configuration to create an S3 bucket for data and model storage.
+
+    <!-- end list -->
+
+    ```bash
+    # Replace "your-unique-mlops-project-bucket-name" with a globally unique name
+    terraform init
+    terraform apply
+    ```
+
+2.  **Upload Data to S3:**
+
+      * Upload the original `default_of_credit_card_clients.csv` dataset to the root of your new S3 bucket.
+      * Upload a new CSV file (e.g., `new_customer_data.csv`) that simulates unseen data for the batch prediction pipeline.
+
+3.  **Start the MLflow UI:**
+
+      * Open a new terminal and start the MLflow tracking server. This will enable experiment logging.
+
+    <!-- end list -->
+
+    ```bash
+    mlflow ui
+    ```
+
+      * The UI is accessible at `http://localhost:5000`.
+
+4.  **Configure Prefect S3 Block:**
+
+      * In the Prefect UI, create an **S3Bucket** block with the name you used in the `batch_flow.py` script. This block securely stores your AWS credentials and bucket name for the Prefect flows.
+
+-----
+
+## 3\. Running the Pipeline ⚙️
+
+Follow these steps to execute the training, deployment, and monitoring phases of the project.
+
+### **Phase 1: Training and Experiment Tracking**
+
+  * Execute the Prefect flow that orchestrates the training script. This script will preprocess data, train a **Random Forest Classifier**, and log the experiment to MLflow.
+
+    ```bash
+    python flow.py
+    ```
+
+  * After the flow completes, navigate to the MLflow UI to view the experiment run. **Note down the Run ID**, as it is needed for the deployment step.
+
+### **Phase 2: Batch Prediction and Monitoring**
+
+  * Open the `batch_flow.py` script and update the `mlflow_model_uri` with the **Run ID** you noted in the previous step.
+
+  * Run the batch prediction flow, which will load the trained model, make predictions on the new data from S3, save the results back to S3, and generate an Evidently report.
+
+    ```bash
+    python batch_flow.py
+    ```
+
+  * Once the flow finishes, you will find a new `data_drift_report.html` file in your local project directory. Open this file to review the data drift analysis.
+
+-----
+
+## 4\. Conclusion 🎉
+
+By following these steps, you will have successfully run an end-to-end MLOps pipeline that demonstrates:
+
+  * **Workflow Orchestration:** Automated training and prediction using Prefect.
+  * **Experiment Tracking:** Versioning models and metrics with MLflow.
+  * **Batch Deployment:** Serving predictions on new data from S3.
+  * **Monitoring:** Detecting data drift with Evidently.
+  * **Infrastructure as Code:** Managing cloud resources with Terraform.

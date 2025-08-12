@@ -1,0 +1,8 @@
+pandas
+numpy
+scikit-learn
+mlflow
+prefect==2.16.1
+prefect-aws
+evidently
+boto3
