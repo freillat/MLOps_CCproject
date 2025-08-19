@@ -152,3 +152,17 @@ By following these steps, you will have successfully run an end-to-end MLOps pip
   * **Batch Deployment:** Serving predictions on new data from S3.
   * **Monitoring:** Detecting data drift with Evidently.
   * **Infrastructure as Code:** Managing cloud resources with Terraform.
+
+## Annex
+
+Building the Docker Image
+From the terminal in the project directory run the following command to build the image. The -t flag tags the image with a name.
+docker build -t credit-default-project .
+
+Running the Prefect Flow with Docker
+Once the image is built, you can run the training flow within a container. You'll need to mount your MLflow artifacts directory and the data directory to the container so it can access them, by running the following command.
+
+docker run -it --rm \
+  -v "$(pwd)/mlruns:/app/mlruns" \
+  -v "$(pwd)/data:/app/data" \
+  credit-default-project
